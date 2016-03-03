@@ -39,7 +39,5 @@ void draw()
           line(points[i].x,points[i].y,points[e].x,points[e].y);
         }
       }
-     }
-     
-     
+     }     
 }
