@@ -1,7 +1,8 @@
-import Point;
-static double angleBetween(Point p1, Point p2, Point p3)
-{
-  //Using dot product formula a.b = |a||b|sin(theta)
+static class Geometry{
+  
+  static double angleBetween(Point p1, Point p2, Point p3)
+  {
+  //Using dot product formula a.b = |a||b|cos(theta)
   //First vector
   Point v1 = new Point((p2.x-p1.x),(p2.y-p1.y));
   //Second vector
@@ -11,5 +12,7 @@ static double angleBetween(Point p1, Point p2, Point p3)
   double v1Norm= Math.sqrt(v1.x*v1.y +v1.x*v1.x);
   double v2Norm = Math.sqrt(v2.x*v2.y +v2.x*v2.x);
   
-  return Math.asin(dP/(v1Norm*v2Norm)); 
+  return Math.acos(dP/(v1Norm*v2Norm)); 
+  }
 }
+}static class

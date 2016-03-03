@@ -22,8 +22,6 @@ void setup()
   }
   Arrays.sort(points);
   background(255);
-
-
 }
 
 void draw()
