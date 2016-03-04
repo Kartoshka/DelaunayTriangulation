@@ -17,7 +17,7 @@ void setup()
     points[i] = new Point((int)(maxWidth*Math.random()),(int)(maxHeight*Math.random()));
     for(int c=0; c<numPoints;c++)
     {
-      adjacencyList[i][c]=0;
+      adjacencyList[i][c]=Math.random()<0.2?1:0;
     }
   }
   Arrays.sort(points);
