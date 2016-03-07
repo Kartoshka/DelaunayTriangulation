@@ -1,20 +1,23 @@
-class Geometry{
-double angleBetween(Point p1, Point p2, Point p3)
-  {
-  //Using dot product formula a.b = |a||b|sin(theta)
-  //First vector
-  Point v1 = new Point((p2.x-p1.x),(p2.y-p1.y));
-  //Second vector
-  Point v2 = new Point((p3.x-p2.x),(p3.y-p2.y));
+public class Triangle{
+  Point p1;
+  Point p2;
+  Point p3;
   
-  int dP = v1.x *v2.x +v1.y*v2.y;
-  double v1Norm= Math.sqrt(v1.x*v1.y +v1.x*v1.x);
-  double v2Norm = Math.sqrt(v2.x*v2.y +v2.x*v2.x);
-  
-  return Math.asin(dP/(v1Norm*v2Norm)); 
-  }
+public Triangle(Point p1, Point p2, Point p3)
+{
+  this.p1=p1;
+  this.p2=p2;
+  this.p3=p3;
+}
 
-double[] getCircumCircle(Point p1, Point p2, Point p3)
+public Triangle(int w, int h) //Super triangle
+{
+  double angleA = Math.atan(w/h);
+  double angleB = Math.atan(h/w);
+  
+  
+}
+double[] getCircumCircle()
 {
   //equation of a circle of the form (x-xo)^2 +(y-y0)^2 =radius^2
   double xo, yo, radius;
@@ -42,4 +45,11 @@ double[] getCircumCircle(Point p1, Point p2, Point p3)
  coords[2]=radius;
  return coords;
 }
+
+boolean isInCircumCircle(Point target)
+{
+  double[] coords = getCircumCircle();
+  return Math.pow(target.x-coords[0],2)+Math.pow(target.y-coords[1],2)<=Math.pow(coords[2],2);
+}
+
 }
