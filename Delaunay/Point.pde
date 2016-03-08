@@ -1,8 +1,7 @@
 class Point implements Comparable{
-int x,y;
-ArrayList<Point> edges = new ArrayList<Point>();
+double x,y;
 
-Point(int i,int j){
+Point(double i,double j){
 x=i;
 y=j;
 }
@@ -17,4 +16,8 @@ int compareTo(Object p)
     return 0;
 }
 
+boolean equalTo(Point p)
+{
+  return this.x== p.x && this.y == p.y;
+}
 }

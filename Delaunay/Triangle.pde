@@ -15,6 +15,13 @@ public Triangle(int w, int h) //Super triangle
   double angleA = Math.atan(w/h);
   double angleB = Math.atan(h/w);
   
+  double H = Math.sqrt(w*w+h*h);
+  double A = H/Math.sin(angleA);
+  double B= H/Math.sin(angleB);
+  
+  p1 = new Point(0,0);
+  p2 = new Point(B,0);
+  p3 = new Point(0,A);
   
 }
 double[] getCircumCircle()
@@ -48,7 +55,7 @@ double[] getCircumCircle()
 
 boolean isInCircumCircle(Point target)
 {
-  double[] coords = getCircumCircle();
+  double[] coords = this.getCircumCircle();
   return Math.pow(target.x-coords[0],2)+Math.pow(target.y-coords[1],2)<=Math.pow(coords[2],2);
 }
 
