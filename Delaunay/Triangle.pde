@@ -60,8 +60,7 @@ boolean isInCircumCircle(Point target)
 
 boolean sharesVertex(Triangle t)
 {
-  
-  return this.p1.equalTo(t.p1) || this.p1.equalTo(t.p2) || this.p1.equalTo(t.p3) || this.p2.equalTo(t.p1)|| this.p2.equalTo(t.p2)||this.p2.equalTo(t.p3) ;
+  return this.p1.equalTo(t.p1) || this.p1.equalTo(t.p2) || this.p1.equalTo(t.p3) || this.p2.equalTo(t.p1)|| this.p2.equalTo(t.p2)||this.p2.equalTo(t.p3) || this.p3.equalTo(t.p1)|| this.p3.equalTo(t.p2)||this.p3.equalTo(t.p3);
 }
 
 }

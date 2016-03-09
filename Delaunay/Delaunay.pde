@@ -6,7 +6,7 @@ final int maxHeight =250;
 int maxNumPoints = 25;
 int numPoints =5;//(int)(maxNumPoints*Math.random());
 Point[] points = new Point[numPoints+3];
-ArrayList triangles = new ArrayList<Triangle>();
+Triangle[] triangles = new Triangle[3*numPoints];
 Geometry g= new Geometry();
 
 void setup()
@@ -19,70 +19,45 @@ void setup()
   
   
   
-  ArrayList edgeBuffer;// = new ArrayList<Point>();
+  Point[] edgeBuffer;
   //Initialize super triangle
   Triangle st = new Triangle(800,500);
   //Add supertriangle to vertex list
   points[numPoints] = st.p1;
   points[numPoints+1] = st.p2;
   points[numPoints+2]=st.p3;
-  triangles.add(st);
+  triangles[0] = st;
   //for every sample point
   for(int v =0; v<numPoints;v++)
   {
-    edgeBuffer = new ArrayList<Point>();
-    for(int t=triangles.size(); t>0;)
-    {
-      Triangle T = (Triangle)triangles.get(--t);
-      if(T.isInCircumCircle(points[v]))
-      {
-        edgeBuffer.add(T.p1);
-        edgeBuffer.add(T.p2);
-        edgeBuffer.add(T.p2);
-        edgeBuffer.add(T.p3);
-        edgeBuffer.add(T.p3);
-        edgeBuffer.add(T.p1);
-        t--;
-      }
-      deleteDuplicateEdges(edgeBuffer);
-      for(int i=0; i<edgeBuffer.size();)
-      {
-        triangles.add(new Triangle(points[v],(Point)edgeBuffer.get(i++),(Point)edgeBuffer.get(i++)));
-      }
-    }
-    
-    for(int t=triangles.size(); t>0;)
-     {
-       Triangle T = (Triangle)triangles.get(--t);
-       if(st.sharesVertex(T))
-       {
-         triangles.remove(t--);
-       }
-     }
+    edgeBuffer = new Point[4*numPoints];
   }
+
+   
   //Remove all triangles shared with super triangles
     background(255);
 }
 
-void deleteDuplicateEdges(ArrayList edgeBuffer)
+void deleteDuplicateEdges(Point[] edgeBuffer)
 {
-  for(int i=edgeBuffer.size();i>0;)
+  for(int i=edgeBuffer.length;i>0;i-=2)
   {
-    Point a = ((Point)edgeBuffer.get(--i));
-    Point b = ((Point)edgeBuffer.get(--i));
+    Point a = edgeBuffer[i];
+    Point b = edgeBuffer[i-1];
     
-    for(int j=i; j>0;)
+    for(int j=i; j>0;j-=2)
     {
       //Out of bounds
-      Point c = ((Point)edgeBuffer.get(--j));
-      Point d = ((Point)edgeBuffer.get(--j));
+      Point c = edgeBuffer[j];
+      Point d = edgeBuffer[j-1];
       
       if(a.equalTo(c) && b.equalTo(b)||a.equalTo(d)&&b.equalTo(c))
       {
-        edgeBuffer.remove(a);
-        edgeBuffer.remove(b);
-        edgeBuffer.remove(c);
-        edgeBuffer.remove(d);
+        //Tag duplicate edges with a -1
+        edgeBuffer[i].x =-1;
+        edgeBuffer[i-1].x =-1;
+        edgeBuffer[j].x =-1;
+        edgeBuffer[j-1].x =-1;
         i-=2;
         break;
       }
