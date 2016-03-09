@@ -10,11 +10,10 @@ public Triangle(Point p1, Point p2, Point p3)
   this.p3=p3;
 }
 
-public Triangle(int w, int h) //Super triangle
+public Triangle(double w, double h) //Super triangle
 {
   double angleA = Math.atan(w/h);
-  double angleB = Math.atan(h/w);
-  
+  double angleB = Math.atan(h/w);  
   double H = Math.sqrt(w*w+h*h);
   double A = H/Math.sin(angleA);
   double B= H/Math.sin(angleB);
@@ -57,6 +56,12 @@ boolean isInCircumCircle(Point target)
 {
   double[] coords = this.getCircumCircle();
   return Math.pow(target.x-coords[0],2)+Math.pow(target.y-coords[1],2)<=Math.pow(coords[2],2);
+}
+
+boolean sharesVertex(Triangle t)
+{
+  
+  return this.p1.equalTo(t.p1) || this.p1.equalTo(t.p2) || this.p1.equalTo(t.p3) || this.p2.equalTo(t.p1)|| this.p2.equalTo(t.p2)||this.p2.equalTo(t.p3) ;
 }
 
 }

@@ -4,7 +4,7 @@ final int maxWidth =400;
 final int maxHeight =250;
 
 int maxNumPoints = 25;
-int numPoints =(int)(maxNumPoints*Math.random());
+int numPoints =5;//(int)(maxNumPoints*Math.random());
 Point[] points = new Point[numPoints+3];
 ArrayList triangles = new ArrayList<Triangle>();
 Geometry g= new Geometry();
@@ -14,26 +14,27 @@ void setup()
   size(800,500);
   for(int i=0; i<numPoints;i++)
   {
-    points[i] = new Point((int)(maxWidth*Math.random())+maxWidth/2,maxHeight/2+(int)(maxHeight*Math.random()));    
+    points[i] = new Point((int)(maxWidth*Math.random())+maxWidth/2,maxHeight/2+(maxHeight*Math.random()));    
   }
   
   
   
   ArrayList edgeBuffer;// = new ArrayList<Point>();
   //Initialize super triangle
-  Triangle st = new Triangle(maxWidth, maxHeight);
+  Triangle st = new Triangle(800,500);
   //Add supertriangle to vertex list
   points[numPoints] = st.p1;
   points[numPoints+1] = st.p2;
   points[numPoints+2]=st.p3;
   triangles.add(st);
-  for(int v =0; v<points.length;v++)
+  //for every sample point
+  for(int v =0; v<numPoints;v++)
   {
     edgeBuffer = new ArrayList<Point>();
-    for(int t=0; t<triangles.size();t++)
+    for(int t=triangles.size(); t>0;)
     {
-      Triangle T = (Triangle)triangles.get(t);
-      if(!T.isInCircumCircle(points[v]))
+      Triangle T = (Triangle)triangles.get(--t);
+      if(T.isInCircumCircle(points[v]))
       {
         edgeBuffer.add(T.p1);
         edgeBuffer.add(T.p2);
@@ -41,42 +42,53 @@ void setup()
         edgeBuffer.add(T.p3);
         edgeBuffer.add(T.p3);
         edgeBuffer.add(T.p1);
-        triangles.remove(t);
+        t--;
       }
-    }
-    println(edgeBuffer.size());
-
-    //deleteDuplicates
-    for(int edge=edgeBuffer.size()-2; edge>=0;edge-=2)
-    {
-      Point a = (Point)edgeBuffer.get(edge);
-      Point b = (Point)edgeBuffer.get(edge+1);
-      
-      for(int compare=edge-2;compare>=0;compare-=2)
+      deleteDuplicateEdges(edgeBuffer);
+      for(int i=0; i<edgeBuffer.size();)
       {
-         Point c = (Point)edgeBuffer.get(compare);
-         Point d = (Point)edgeBuffer.get(compare+1); 
-         if(a.equalTo(c) && b.equalTo(d) ||a.equalTo(d) && b.equalTo(c))
-         {
-           edgeBuffer.remove(a);
-           edgeBuffer.remove(b);
-           edgeBuffer.remove(c);
-           edgeBuffer.remove(d);
-           edge-=4;
-         }
+        triangles.add(new Triangle(points[v],(Point)edgeBuffer.get(i++),(Point)edgeBuffer.get(i++)));
       }
-    }
-    for(int edge=edgeBuffer.size()-2; edge>=0;edge-=2)
-    {
-        triangles.add(new Triangle(points[v],(Point)edgeBuffer.get(edge),(Point)edgeBuffer.get(edge+1)));
     }
     
+    for(int t=triangles.size(); t>0;)
+     {
+       Triangle T = (Triangle)triangles.get(--t);
+       if(st.sharesVertex(T))
+       {
+         triangles.remove(t--);
+       }
+     }
   }
-  println(triangles.size());
-  background(255);
+  //Remove all triangles shared with super triangles
+    background(255);
 }
 
-
+void deleteDuplicateEdges(ArrayList edgeBuffer)
+{
+  for(int i=edgeBuffer.size();i>0;)
+  {
+    Point a = ((Point)edgeBuffer.get(--i));
+    Point b = ((Point)edgeBuffer.get(--i));
+    
+    for(int j=i; j>0;)
+    {
+      //Out of bounds
+      Point c = ((Point)edgeBuffer.get(--j));
+      Point d = ((Point)edgeBuffer.get(--j));
+      
+      if(a.equalTo(c) && b.equalTo(b)||a.equalTo(d)&&b.equalTo(c))
+      {
+        edgeBuffer.remove(a);
+        edgeBuffer.remove(b);
+        edgeBuffer.remove(c);
+        edgeBuffer.remove(d);
+        i-=2;
+        break;
+      }
+    }
+  }
+}
 void draw()
 {
      fill(0);
