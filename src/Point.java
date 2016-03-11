@@ -1,23 +1,24 @@
-class Point implements Comparable{
+class Point implements Comparable<Point>{
 double x,y;
+int RGB;
 
-Point(double i,double j){
+Point(double i,double j, int color){
 x=i;
 y=j;
+RGB=color;
 }
 Point(Point t)
 {
 	this.x=t.x;
 	this.y=t.y;
 	}
-public int compareTo(Object p)
+public int compareTo(Point p)
 { 
-  if (this.x == ((Point)p).x && this.y ==((Point)p).y)
-    return 0;
-  else if(this.x <((Point)p).x)
-	  return-1;
-  else 
+  if(this.x<p.x)
+	  return -1;
+  if(this.x>p.x)
 	  return 1;
+  return 0;
   
 }
 
