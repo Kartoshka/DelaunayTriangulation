@@ -5,15 +5,20 @@ Point(double i,double j){
 x=i;
 y=j;
 }
-
-public int compareTo(Object p)
+Point(Point t)
 {
-  if(this.x >((Point)p).x)
-    return 1;
-  else if(this.x<((Point)p).x)
-    return -1;
-  else 
+	this.x=t.x;
+	this.y=t.y;
+	}
+public int compareTo(Object p)
+{ 
+  if (this.x == ((Point)p).x && this.y ==((Point)p).y)
     return 0;
+  else if(this.x <((Point)p).x)
+	  return-1;
+  else 
+	  return 1;
+  
 }
 
 boolean equalTo(Point p)
