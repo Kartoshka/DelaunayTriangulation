@@ -11,11 +11,11 @@ import javax.swing.JPanel;
 
 public class Delaunay extends JPanel{
 	//Point generation boundary
-	final int maxWidth =400;
-	final int maxHeight =250;
+	final int maxWidth =400*2;
+	final int maxHeight =250*2;
 	
 	//Points
-	int numPoints =250;
+	int numPoints =500;
 	Point[] points = new Point[numPoints];
 	//Triangles
 	ArrayList<Triangle> triangles = new ArrayList<Triangle>();
@@ -24,29 +24,17 @@ public class Delaunay extends JPanel{
 		JFrame frame = new JFrame();
 		frame.setTitle("test");
 		frame.add(new Delaunay());
-		frame.setSize(800,500);
+		frame.setSize(600,600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 
 	Delaunay()
-	{ 
-		BufferedImage img = null;
-		try {
-		    img = ImageIO.read(new File("Martlet.png"));
-		} catch (IOException e) {
-		}
-		int w = img.getWidth();
-		int h = img.getHeight();
-	int[][] pixels = new int[w][h];
-
-	for( int i = 0; i < w; i++ )
-	    for( int j = 0; j < h; j++ )
-	        pixels[i][j] = img.getRGB( i, j );
-	
+	{ 	
 	  for(int i=0; i<numPoints;i++)
 	  {
-		  points[i]= new Point(maxWidth*Math.random(),maxHeight*Math.random());        
+		 // points[i]= new Point(maxWidth*Math.random(),maxHeight*Math.random());  
+		 points[i] = new Point((250-0.5*i)*Math.cos(2*i) +250,(250-0.5*i)*Math.sin(2*i) +250);
 	  }
 		JPanel self = this;
 		new Thread()

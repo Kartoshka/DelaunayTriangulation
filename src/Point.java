@@ -2,10 +2,9 @@ class Point implements Comparable<Point>{
 double x,y;
 int RGB;
 
-Point(double i,double j, int color){
+Point(double i,double j){
 x=i;
 y=j;
-RGB=color;
 }
 Point(Point t)
 {
