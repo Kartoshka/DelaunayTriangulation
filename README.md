@@ -1,2 +1,2 @@
 # DelaunayTriangulation
-Delaunay Triangulation implementation in Processing 3
+Delaunay Triangulation implementation in Java
