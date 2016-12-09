@@ -1,52 +1,77 @@
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.BorderLayout;
 
 public class Delaunay extends JPanel{
 	//Point generation boundary
-	final int maxWidth =400*2;
-	final int maxHeight =250*2;
+	final static int SCREEN_WIDTH =800;
+	final static int SCREEN_HEIGHT =500;
 	
+	final static int  borderSpacingX = 100;
+	final static int borderSpacingY = 125;
 	//Points
-	int numPoints =500;
+	int numPoints =200;
 	Point[] points = new Point[numPoints];
 	//Triangles
 	ArrayList<Triangle> triangles = new ArrayList<Triangle>();
 	
+	static Delaunay active;
+	static JPanel triangulationPane = new JPanel();
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
-		frame.setTitle("test");
-		frame.add(new Delaunay());
-		frame.setSize(600,600);
+		frame.setTitle("Delaunay");
+		frame.setLayout(new BorderLayout());
+		
+		JButton triangulateBTN = new JButton("Triangulate");
+		triangulateBTN.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(active!=null){
+					frame.remove(active);
+				}
+				active = new Delaunay();
+				frame.getContentPane().add(active,BorderLayout.CENTER);
+				frame.revalidate();
+				frame.repaint();
+			}
+			
+		});
+		frame.getContentPane().add(triangulateBTN, BorderLayout.NORTH);
+		
+		frame.setSize(SCREEN_WIDTH,SCREEN_HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 
 	Delaunay()
 	{ 	
+	 
+	 int maxWidth = SCREEN_WIDTH - borderSpacingY*2;
+	 int maxHeight = SCREEN_HEIGHT - borderSpacingX*2;
+	 
 	  for(int i=0; i<numPoints;i++)
 	  {
-		 // points[i]= new Point(maxWidth*Math.random(),maxHeight*Math.random());  
-		 points[i] = new Point((250-0.5*i)*Math.cos(2*i) +250,(250-0.5*i)*Math.sin(2*i) +250);
+		 points[i]= new Point(borderSpacingY+maxWidth*Math.random(),borderSpacingX + maxHeight*Math.random()); 
+		  //Fill points array with points depicting a spiral
+		 //points[i] = new Point((250-0.5*i)*Math.cos(2*i) +250,(250-0.5*i)*Math.sin(2*i) +250);
 	  }
+	  
 		JPanel self = this;
 		new Thread()
 		{
 		    public void run() {
-		      
-		      //Arrays.sort(points);
 		   	  //Initialize super triangle
 		   	  Triangle st = new Triangle();
-		   	  st.p1 = new Point(maxWidth/2 -2*maxWidth,maxHeight/2 -maxWidth);
-		      st.p2 = new Point( maxWidth/2, maxHeight/2 + 2.0f * maxWidth);
-		      st.p3 = new Point( maxWidth/2 + 2.0f * maxWidth, maxHeight/2 - maxWidth);
+		   	  st.p1 = new Point(SCREEN_WIDTH/2 -2*SCREEN_WIDTH,maxHeight/2 -SCREEN_WIDTH);
+		      st.p2 = new Point( SCREEN_WIDTH/2, maxHeight/2 + 2.0f * SCREEN_WIDTH);
+		      st.p3 = new Point( SCREEN_WIDTH/2 + 2.0f * SCREEN_WIDTH, maxHeight/2 - SCREEN_WIDTH);
 		   	  //Add supertriangle to triangle list
 		   	  triangles.add(st);
 		   	  
@@ -89,7 +114,7 @@ public class Delaunay extends JPanel{
 		   	    }		   	    
 		   	    //Draw after each point
 		   	    self.repaint();
-		   	    try { Thread.sleep(15);} catch(Exception e) {}
+//		   	    try { Thread.sleep(15);} catch(Exception e) {}
 		   	  }
 		   	  //Remove all triangles shared with super triangles
 		   	  		   	    
